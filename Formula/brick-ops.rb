@@ -3,8 +3,8 @@ class BrickOps < Formula
 
   desc "Databricks operations CLI"
   homepage "https://github.com/DataRow1/db-ops"
-  url "https://github.com/DataRow1/db-ops/archive/refs/tags/0.1.0.tar.gz"
-  sha256 "e4755e0df6739717aa400a140892813d776dc02edf96c2214c791137118807e5"
+  url "https://github.com/DataRow1/db-ops/archive/refs/tags/0.1.1.tar.gz"
+  sha256 "d5558cd419c8d46bdc958064cb97f963d1ea793866414c025906ec15033512ed"
   license "MIT"
 
   depends_on "python@3.11"
