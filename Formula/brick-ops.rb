@@ -7,13 +7,14 @@ class BrickOps < Formula
   sha256 "eb9c4c1f88a3e64e78edadd49aadd90ed97dbd128f89d0dc4563d127520e9cd8"
   license "MIT"
 
-  depends_on "python@3.11"
+  depends_on "pipx"
 
   def install
-    virtualenv_install_with_resources
+    # Install into pipx-managed venv
+    system "pipx", "install", "--force", "."
   end
 
   test do
-    system "#{bin}/dbops", "--help"
+    system "dbops", "--help"
   end
 end
