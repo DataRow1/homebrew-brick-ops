@@ -2,31 +2,24 @@
 set -euo pipefail
 
 # Usage:
-#   ./scripts/update_formula.sh 0.1.5
-# or:
-#   ./scripts/update_formula.sh v0.1.5
+#   ./scripts/update_formula.sh 0.1.3
 #
-# Assumes:
-# - repo: https://github.com/DataRow1/brick-ops
-# - formula: Formula/brick-ops.rb
-# - release assets:
+# Assumptions:
+# - GitHub repo: https://github.com/DataRow1/db-ops
+# - Homebrew tap contains: Formula/brick-ops.rb
+# - Release assets:
 #     dbops-darwin-arm64.tar.gz
 #     dbops-darwin-amd64.tar.gz
 
 VERSION="${1:-}"
 if [[ -z "$VERSION" ]]; then
-  echo "Usage: $0 <version> (e.g. 0.1.5 or v0.1.5)" >&2
+  echo "Usage: $0 <version> (e.g. 0.1.3)" >&2
   exit 2
 fi
 
-TAG="$VERSION"
-if [[ "$TAG" != v* ]]; then
-  TAG="v$TAG"
-fi
-VER_NO_V="${TAG#v}"
-
 OWNER="DataRow1"
-REPO="brick-ops"
+REPO="db-ops"
+TAG="$VERSION"
 BASE="https://github.com/${OWNER}/${REPO}/releases/download/${TAG}"
 
 ARM_ASSET="dbops-darwin-arm64.tar.gz"
@@ -53,24 +46,26 @@ fetch_and_sha() {
 ARM_SHA="$(fetch_and_sha "${BASE}/${ARM_ASSET}" "${tmpdir}/${ARM_ASSET}")"
 AMD_SHA="$(fetch_and_sha "${BASE}/${AMD_ASSET}" "${tmpdir}/${AMD_ASSET}")"
 
-echo "arm64 sha256: $ARM_SHA"
-echo "amd64 sha256: $AMD_SHA"
+echo
+echo "Computed SHA256:"
+echo "  arm64 : $ARM_SHA"
+echo "  amd64 : $AMD_SHA"
+echo
 
-# Update version line: version "x.y.z"
-perl -0777 -i -pe "s/version\\s+\\\"[0-9.]+\\\"/version \\\"${VER_NO_V}\\\"/g" "$FORMULA_PATH"
+# 1) Update version line
+perl -0777 -i -pe "s/version\\s+\\\"[0-9.]+\\\"/version \\\"${VERSION}\\\"/g" "$FORMULA_PATH"
 
-# Update URLs (keep your formula structure intact)
-perl -0777 -i -pe "s|releases/download/v[0-9.]+/dbops-darwin-arm64\\.tar\\.gz|releases/download/${TAG}/dbops-darwin-arm64.tar.gz|g" "$FORMULA_PATH"
-perl -0777 -i -pe "s|releases/download/v[0-9.]+/dbops-darwin-amd64\\.tar\\.gz|releases/download/${TAG}/dbops-darwin-amd64.tar.gz|g" "$FORMULA_PATH"
+# 2) Update URLs
+perl -0777 -i -pe "s|releases/download/[0-9.]+/dbops-darwin-arm64\\.tar\\.gz|releases/download/${TAG}/dbops-darwin-arm64.tar.gz|g" "$FORMULA_PATH"
+perl -0777 -i -pe "s|releases/download/[0-9.]+/dbops-darwin-amd64\\.tar\\.gz|releases/download/${TAG}/dbops-darwin-amd64.tar.gz|g" "$FORMULA_PATH"
 
-# Update sha256 lines (assumes exactly two sha256 entries in the macOS on_macos block)
-# We match by nearby URL to avoid swapping them.
+# 3) Update sha256 values (bound to the correct asset)
 perl -0777 -i -pe "s|(dbops-darwin-arm64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")[a-f0-9]{64}(\\\")|\\1${ARM_SHA}\\2|g" "$FORMULA_PATH"
 perl -0777 -i -pe "s|(dbops-darwin-amd64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")[a-f0-9]{64}(\\\")|\\1${AMD_SHA}\\2|g" "$FORMULA_PATH"
 
+echo "✅ Updated $FORMULA_PATH"
 echo
-echo "Updated: $FORMULA_PATH"
-echo "Now run:"
+echo "Next steps:"
 echo "  git diff"
-echo "  git commit -am \"brick-ops ${VER_NO_V}\""
+echo "  git commit -am \"brick-ops ${VERSION}\""
 echo "  git push"
