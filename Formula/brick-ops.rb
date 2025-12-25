@@ -1,6 +1,6 @@
 class BrickOps < Formula
   desc "Databricks operations CLI for Jobs and Unity Catalog"
-  homepage "https://github.com/DataRow1/dbops"
+  homepage "https://github.com/DataRow1/brick-ops"
   license "MIT"
   version "0.1.4"
 
@@ -15,7 +15,7 @@ class BrickOps < Formula
   end
 
   def install
-    bin.install Dir["dbops-darwin-*"].first => "dbops"
+    bin.install "dbops-darwin-#{Hardware::CPU.arm? ? 'arm64' : 'amd64'}" => "dbops"
   end
 
   test do
