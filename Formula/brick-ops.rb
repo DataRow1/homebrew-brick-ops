@@ -1,20 +1,24 @@
 class BrickOps < Formula
-  include Language::Python::Virtualenv
-
-  desc "Databricks operations CLI"
-  homepage "https://github.com/DataRow1/db-ops"
-  url "https://github.com/DataRow1/db-ops/archive/refs/tags/0.1.2.tar.gz"
-  sha256 "eb9c4c1f88a3e64e78edadd49aadd90ed97dbd128f89d0dc4563d127520e9cd8"
+  desc "Databricks operations CLI for Jobs and Unity Catalog"
+  homepage "https://github.com/DataRow1/brick-ops"
   license "MIT"
+  version "0.1.3"
 
-  depends_on "pipx"
+  on_macos do
+    if Hardware::CPU.arm?
+      url "https://github.com/DataRow1/brick-ops/releases/download/v0.1.3/dbops-darwin-arm64"
+      sha256 "<SHA_ARM64>"
+    else
+      url "https://github.com/DataRow1/brick-ops/releases/download/v0.1.3/dbops-darwin-amd64"
+      sha256 "<SHA_AMD64>"
+    end
+  end
 
   def install
-    # Install into pipx-managed venv
-    system "pipx", "install", "--force", "."
+    bin.install Dir["dbops-darwin-*"].first => "dbops"
   end
 
   test do
-    system "dbops", "--help"
+    system "#{bin}/dbops", "--help"
   end
 end
