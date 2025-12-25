@@ -2,7 +2,7 @@ class BrickOps < Formula
   desc "Databricks operations CLI for Jobs and Unity Catalog"
   homepage "https://github.com/DataRow1/db-ops"
   license "MIT"
-  version "0.1.4"
+  version "0.1.99"
 
   on_macos do
     if Hardware::CPU.arm?
