@@ -6,11 +6,10 @@ class BrickOps < Formula
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-darwin-arm64.tar.gz"
-      sha256 "29ccb89edab69b67f3df3283a589c1876581dd9556a88f16b49528fbd1b4f074"
+      url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/60f43a045fef46463dff350a9d4d4fb007d1ddcba2dac29ee35f8a59b91d7f"
     else
       url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-darwin-amd64.tar.gz"
-      sha256 "7066372ab0630054609abde338c8fce5fe1b870b6d21e6c0670e0ac789e4a022"
+      sha256 "d6e01d7539767900b0ad27066a923f76d07e8d76a1efc94f5d74b2e588449640"
     end
   end
 
