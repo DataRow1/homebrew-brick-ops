@@ -21,7 +21,13 @@ class BrickOps < Formula
 
   def install
     libexec.install "dbops"
-    bin.install_symlink libexec/"dbops/dbops" => "dbops"
+
+    (bin/"dbops").write <<~EOS
+      #!/bin/bash
+      exec "#{libexec}/dbops/dbops" "$@"
+    EOS
+
+    (bin/"dbops").chmod 0755
   end
 
   test do
