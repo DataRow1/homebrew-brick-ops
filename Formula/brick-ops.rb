@@ -20,8 +20,16 @@ class BrickOps < Formula
   end
 
   def install
+    # Install the full PyInstaller onedir bundle (directory `dbops/`)
     libexec.install Dir["dbops"]
-    bin.write_exec_script libexec/"dbops/dbops"
+
+    # Wrapper script to execute the binary from inside its bundle
+    (bin/"dbops").write <<~EOS
+      #!/bin/bash
+      exec "#{libexec}/dbops/dbops" "$@"
+    EOS
+
+    chmod 0755, bin/"dbops"
   end
 
   test do
