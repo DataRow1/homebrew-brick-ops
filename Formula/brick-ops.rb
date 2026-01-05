@@ -21,15 +21,20 @@ class BrickOps < Formula
   end
 
 
+  # def install
+  #   libexec.install "dbops"
+
+  #   (bin/"dbops").write <<~EOS
+  #     #!/bin/bash
+  #     exec "#{libexec}/dbops/dbops" "$@"
+  #   EOS
+
+  #   (bin/"dbops").chmod 0755
+  # end
+
   def install
-    libexec.install "dbops"
-
-    (bin/"dbops").write <<~EOS
-      #!/bin/bash
-      exec "#{libexec}/dbops/dbops" "$@"
-    EOS
-
-    (bin/"dbops").chmod 0755
+    libexec.install Dir["dbops"]
+    bin.write_exec_script libexec/"dbops/dbops"
   end
 
   test do
