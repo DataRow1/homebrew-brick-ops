@@ -1,21 +1,31 @@
 class BrickOps < Formula
   desc "Databricks operations CLI for Jobs and Unity Catalog"
-  homepage "https://github.com/DataRow1/db-ops"
+  homepage "https://github.com/DataRow1/brick-ops"
   license "MIT"
   version "0.1.7"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/DataRow1/db-ops/releases/download/0.1.4/dbops-darwin-arm64"
-      sha256 "29ccb89edab69b67f3df3283a589c1876581dd9556a88f16b49528fbd1b4f074"
+      url "https://github.com/DataRow1/db-ops/releases/download/#{version}/dbops-darwin-arm64.tar.gz"
+      sha256 "__MACOS_ARM64_SHA256__"
     else
-      url "https://github.com/DataRow1/db-ops/releases/download/0.1.4/dbops-darwin-amd64"
-      sha256 "7066372ab0630054609abde338c8fce5fe1b870b6d21e6c0670e0ac789e4a022"
+      url "https://github.com/DataRow1/db-ops/releases/download/#{version}/dbops-darwin-amd64.tar.gz"
+      sha256 "__MACOS_ARM64_SHA256__"
+    end
+  end
+
+  on_linux do
+    if Hardware::CPU.arm?
+      url "https://github.com/DataRow1/db-ops/releases/download/#{version}/dbops-linux-arm64.tar.gz"
+      sha256 "__LINUX_ARM64_SHA256__"
+    else
+      url "https://github.com/DataRow1/db-ops/releases/download/#{version}/dbops-linux-amd64.tar.gz"
+      sha256 "__LINUX_AMD64_SHA256__"
     end
   end
 
   def install
-    bin.install "dbops-darwin-#{Hardware::CPU.arm? ? 'arm64' : 'amd64'}" => "dbops"
+    bin.install "dbops"
   end
 
   test do
