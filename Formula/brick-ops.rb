@@ -15,11 +15,13 @@ class BrickOps < Formula
   end
 
   on_linux do
-    url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/J7edb6fca07c75175fadfea658d07bf9ea82ecc50f7b8ba96ce4bb35c59b30f"
+    url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-linux-amd64.tar.gz"
+    sha256 "__LINUX_AMD64_SHA256__"
   end
 
   def install
-    bin.install "dbops"
+    libexec.install "dbops"
+    bin.install_symlink libexec/"dbops/dbops" => "dbops"
   end
 
   test do
