@@ -10,7 +10,7 @@ class BrickOps < Formula
       sha256 "__DARWIN_ARM64_SHA256__"
     else
       url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-darwin-amd64.tar.gz"
-      sha256 "d6e01d7539767900b0ad27066a923f76d07e8d76a1efc94f5d74b2e588449640"
+      sha256 "__DARWIN_AMD64_SHA256__"
     end
   end
 
