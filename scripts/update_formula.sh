@@ -5,7 +5,7 @@ set -euo pipefail
 #   ./scripts/update_formula.sh 0.1.3
 #
 # Assumptions:
-# - GitHub repo: https://github.com/DataRow1/db-ops
+# - GitHub repo: https://github.com/DataRow1/brick-ops
 # - Homebrew tap contains: Formula/brick-ops.rb
 # - Release assets:
 #     dbops-darwin-arm64.tar.gz
@@ -18,13 +18,12 @@ if [[ -z "$VERSION" ]]; then
 fi
 
 OWNER="DataRow1"
-REPO="db-ops"
+REPO="brick-ops"
 TAG="$VERSION"
 BASE="https://github.com/${OWNER}/${REPO}/releases/download/${TAG}"
 
 ARM_ASSET="dbops-darwin-arm64.tar.gz"
 AMD_ASSET="dbops-darwin-amd64.tar.gz"
-LINUX_ARM_ASSET="dbops-linux-arm64.tar.gz"
 LINUX_AMD_ASSET="dbops-linux-amd64.tar.gz"
 
 FORMULA_PATH="Formula/brick-ops.rb"
@@ -58,20 +57,19 @@ echo
 echo "Computed SHA256:"
 echo "  arm64 : $ARM_SHA"
 echo "  amd64 : $AMD_SHA"
+echo "  linux amd64 : $LINUX_AMD_SHA"
 echo
 
 # 1) Update version line
 perl -0777 -i -pe "s/version\\s+\\\"[0-9.]+\\\"/version \\\"${VERSION}\\\"/g" "$FORMULA_PATH"
 
 # 2) Update URLs
-perl -0777 -i -pe "s|releases/download/[0-9.]+/dbops-darwin-arm64\\.tar\\.gz|releases/download/${TAG}/dbops-darwin-arm64.tar.gz|g" "$FORMULA_PATH"
-perl -0777 -i -pe "s|releases/download/[0-9.]+/dbops-darwin-amd64\\.tar\\.gz|releases/download/${TAG}/dbops-darwin-amd64.tar.gz|g" "$FORMULA_PATH"
-perl -0777 -i -pe "s|releases/download/[0-9.]+/dbops-linux-amd64\\.tar\\.gz|releases/download/${TAG}/dbops-linux-amd64.tar.gz|g" "$FORMULA_PATH"
+# URLs in the formula use `#{version}` interpolation, so we only need to bump `version`.
 
 # 3) Update sha256 values (bound to the correct asset)
-perl -0777 -i -pe "s|(dbops-darwin-arm64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")[a-f0-9]{64}(\\\")|\\1${ARM_SHA}\\2|g" "$FORMULA_PATH"
-perl -0777 -i -pe "s|(dbops-darwin-amd64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")[a-f0-9]{64}(\\\")|\\1${AMD_SHA}\\2|g" "$FORMULA_PATH"
-perl -0777 -i -pe "s|(dbops-linux-amd64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")[a-f0-9]{64}(\\\")|\\1${LINUX_AMD_SHA}\\2|g" "$FORMULA_PATH"
+perl -0777 -i -pe "s|(dbops-darwin-arm64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")(?:[a-f0-9]{64}|__DARWIN_ARM64_SHA256__)(\\\")|\\1${ARM_SHA}\\2|g" "$FORMULA_PATH"
+perl -0777 -i -pe "s|(dbops-darwin-amd64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")(?:[a-f0-9]{64}|__DARWIN_AMD64_SHA256__)(\\\")|\\1${AMD_SHA}\\2|g" "$FORMULA_PATH"
+perl -0777 -i -pe "s|(dbops-linux-amd64\\.tar\\.gz\\\"\\s*\\n\\s*sha256\\s+\\\")(?:[a-f0-9]{64}|__LINUX_AMD64_SHA256__)(\\\")|\\1${LINUX_AMD_SHA}\\2|g" "$FORMULA_PATH"
 
 echo "✅ Updated $FORMULA_PATH"
 echo
