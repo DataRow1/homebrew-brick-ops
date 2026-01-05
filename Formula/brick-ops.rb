@@ -14,29 +14,13 @@ class BrickOps < Formula
     end
   end
 
-
-
   on_linux do
     url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-linux-amd64.tar.gz"
     sha256 "f6e950fb009a0843091287725b463b5d2867c8794f6d6d6478b054142003f816"
   end
 
-
-
-  # def install
-  #   libexec.install "dbops"
-
-  #   (bin/"dbops").write <<~EOS
-  #     #!/bin/bash
-  #     exec "#{libexec}/dbops/dbops" "$@"
-  #   EOS
-
-  #   (bin/"dbops").chmod 0755
-  # end
-
   def install
-    libexec.install Dir["dbops"]
-    bin.write_exec_script libexec/"dbops/dbops"
+    bin.install "dbops"
   end
 
   test do
