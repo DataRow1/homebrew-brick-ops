@@ -20,7 +20,8 @@ class BrickOps < Formula
   end
 
   def install
-    bin.install "dbops"
+    libexec.install Dir["dbops"]
+    bin.write_exec_script libexec/"dbops/dbops"
   end
 
   test do
