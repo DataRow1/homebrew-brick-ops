@@ -2,15 +2,15 @@ class BrickOps < Formula
   desc "Databricks operations CLI for Jobs and Unity Catalog"
   homepage "https://github.com/DataRow1/brick-ops"
   license "MIT"
-  version "0.4.0"
+  version "0.4.1"
 
   on_macos do
     if Hardware::CPU.arm?
       url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-darwin-arm64.tar.gz"
-      sha256 "b487dc64945229d49eb51688edd0b632c2cf3b32fab49a0681d4049d07bc30d2"
+      sha256 "bac95f61cfc0bf6cdadbea2d985d1d6a63a483cc4962bc131f515f99e3094dc4"
     else
       url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-darwin-amd64.tar.gz"
-      sha256 "7b279fe54481fe83ac097044d73a53245ed5fada0ad9aa40ecadf262562d8d84"
+      sha256 "1883583925b9a8cc6599acc61f51cf7e4e8e27ce78dba027af99d7017c07bbf8"
     end
   end
 
@@ -18,10 +18,12 @@ class BrickOps < Formula
 
 
 
+
   on_linux do
     url "https://github.com/DataRow1/brick-ops/releases/download/#{version}/dbops-linux-amd64.tar.gz"
-    sha256 "12f76a309a4ca14287e6c807cd6e48d9ba14a2ad70ec81618b58f11ed32ab41b"
+    sha256 "0be18679cb5b9f6c7680fbc323f5594c0cb01040e702908eecbf112e38acdda4"
   end
+
 
 
 
